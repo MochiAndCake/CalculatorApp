@@ -1,3 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <string name="app_name">Simple_Calculator</string>
+    <string name="app_name">Converter Calculator</string>
+    <string-array name="conversions_array">
+        <item>Metres to Feet</item>
+        <item>Feet to Metres</item>
+        <item>Kilometres to Miles</item>
+        <item>Miles to Kilometres</item>
+        <item>Grams to Pounds</item>
+        <item>Pounds to Grams</item>
+        <item>Celsius to Fahrenheit</item>
+        <item>Fahrenheit to Celsius</item>
+    </string-array>
 </resources>

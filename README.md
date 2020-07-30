@@ -2,7 +2,10 @@
 
 Author: Ann Soong
 
-The objective of this project is to create an android app that acts as calculator.
+The objective of this project is to create an android app that acts as calculator and a basic unit
+converter.
+
+
 
 User cases:
 
@@ -19,3 +22,17 @@ User cases:
 
 4. On the Unit Conversion screen, the user will see a drop down menu. The user will select an option
     and the original number and unit and the converted number and unit will be displayed.
+
+
+
+How to run the program:
+
+
+
+Test cases:
+
+1.
+
+2.
+
+3.

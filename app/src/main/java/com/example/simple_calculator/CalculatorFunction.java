@@ -29,70 +29,106 @@ public class CalculatorFunction {
     }
 
     /**
-     * This private method checks if there is a symbol at the index given.
+     * This private method checks if the character is a sign except minus signs.
      *
-     * @param c The index of the view text to check.
-     * @return True if the character at the index is an operator symbol.
+     * @param c The character to be checked
+     * @return True if the character an operator symbol except minus.
      */
-    private boolean checkIfSymbolExceptMinus(char c){
+    private boolean signExceptMinus(char c){
         return c == '+' || c == '×' || c == '÷';
     }
 
-    // ÷×-+
+    private boolean isNum(char c){
+        return Character.isDigit(c);
+    }
+
+    // ÷ × - + ( ) 0 1 2 3 4 5 6 7 8 9
     public boolean breakUpEquation(String expression){
         brokenExpression = new ArrayList<String>();
-        String strWord = "";
-        boolean wordHasDecimal = false;
+        String strToken = "";
+        boolean numHasDecimal = false;
         char char1, char2;
 
-        char1 = expression.charAt(0);
-
         // Check first character.
-        if (checkIfSymbolExceptMinus(char1) || char1 == ')'){
-            // First character
+        char1 = expression.charAt(0);
+        if (signExceptMinus(char1) || char1 == ')'){
+            // First character can't be ÷, ×, +, or )
             return false;
         } else if (char1 == '('){
             // Add bracket to the bracket stack
             openBrackets.push(char1);
             brokenExpression.add(Character.toString(char1));
-        } else if (char1 == '-' || char1 == '.'){
-            strWord += char1;
-            wordHasDecimal = char1 == '.';
+        } else if (char1 == '.'){
+            strToken += "0" + char1;
+            numHasDecimal = true;
+        } else {
+            strToken += char1;
         }
 
+        // Checking the other characters in the expression
         for(int i = 1; i < expression.length(); i++){
-            char1 = expression.charAt(i-1);
-            char2 = expression.charAt(i);
+            char1 = expression.charAt(i-1); // Previous character
+            char2 = expression.charAt(i); // Current character
 
-            if (char2 == '.' && (wordHasDecimal || char1 == '.')) {
-                // 2 decimals in a row or a decimal added to a number that already has a decimal is an error.
+            // Cases that are errors
+            if (char2 == '.' && numHasDecimal) {
+                // A decimal added to a number that already has a decimal is an error.
                 return false;
-            } else if (char2 == '-' && char1 == '-' && expression.charAt(i+2) == '-') {
+            } else if (char1 == '-' && char2 == '-' && expression.charAt(i+2) == '-') {
                 // 3 negatives in a row is an error.
                 return false;
-            } else if (char1 == '-' && checkIfSymbolExceptMinus(char2)) {
+            } else if (char1 == '-' && (signExceptMinus(char2) || char2 == ')')) {
                 // If the previous symbol was a negative sign, the current character is a sign, then it is an error.
+                // But the reverse is possible.
                 return false;
-            } else if (checkIfSymbolExceptMinus(char1) && checkIfSymbolExceptMinus(char2)){
+            } else if (signExceptMinus(char1) && signExceptMinus(char2)) {
                 // Back to back symbols, excluding negatives, is an error.
                 return false;
-            } else if (char2 == '('){
-                openBrackets.push(char2);
-            } else if (char2 == ')'){
-                closeBrackets.push(char2);
+            } else if ( (signExceptMinus(char1) && char2 == ')') || signExceptMinus(char2) && char1 == '(') {
+                // If it is:
+                //      Sign & )
+                //      ( & Sign
+                // Then it is improper.
+                return false;
             }
 
-            if( char1 == '-' ){
+            // Now we will see how to add character to ArrayList.
 
-            } else if (Character.isDigit(char1) && !Character.isDigit(char2) && char2 != '.'){
-                //brokenExpression.add(expression.substring(i,j));
+            // If the current character is a sign... _+
+            if(signExceptMinus(char2)){
+                if(char1 == ')'){
+                } else if (char1 == '.'){
+                    strToken += "0";
+                    brokenExpression.add(strToken);
+                    strToken = "";
+                } else {
+                    if(strToken.length() > 0){
+                        brokenExpression.add(strToken);
+                        strToken = "";
+                        numHasDecimal = false;
+                    }
+                }
                 brokenExpression.add(Character.toString(char2));
-                //i = j;
-            } else if ( Character.isDigit(char1) && Character.isDigit(char2) ){
-                strWord += char2;
+            } else if (char2 == '('){
+                if (char1 == '.'){
+                    strToken += "0";
+                    brokenExpression.add(strToken);
+                    strToken = "";
+                    brokenExpression.add(Character.toString(char2));
+                } else if (isNum(char1) || char1 == ')'){
+                    if(strToken.length() > 0){
+                        brokenExpression.add(strToken);
+                        strToken = "";
+                        numHasDecimal = false;
+                    }
+                    brokenExpression.add("×");
+                    brokenExpression.add(Character.toString(char2));
+                } else if (signExceptMinus(char1)){
+
+                }
             }
 
-            wordHasDecimal = char2 == '.';
+
         }
         return false;
     }

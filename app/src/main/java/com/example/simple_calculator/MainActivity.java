@@ -146,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonDecimal.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
+            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear or undo.")) {
                 previousText = txtScreen.getText().toString();
                 if (numHasDecimal) {
-                    txtScreen.setText("SYNTAX ERROR - Please clear.");
+                    txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
                 } else if (txtScreen.getText().equals("") || checkIfSymbol(txtScreen.getText().toString().length()-1)) {
                     // If there is currently no numbers inputted, then a 0 is appended before the decimal.
                     txtScreen.setText(txtScreen.getText() + "0.");
@@ -168,20 +168,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // write the functionality for addition
 
-                if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
+                if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear or undo.")) {
                     previousText = txtScreen.getText().toString();
-                    if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
+                    int previousCharIndex = txtScreen.getText().toString().length()-1;
+                    if(checkIfSymbol(previousCharIndex)){
                         // If a symbol was just added, this is an improper expression.
-                        txtScreen.setText("SYNTAX ERROR - Please clear.");
+                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
                     } else if(txtScreen.getText() == ""){
                         // If there is currently no text, we append a 0 and then +.
-                        add = true;
-                        txtScreen.setText("0+");
-                    } else {
-                        // If there is a previous operator, we evaluate the expression and then append the sign.
-                        evaluate();
-                        add = true;
-                        txtScreen.setText(val_one + "+");
+                        txtScreen.setText("0 + ");
+                    } else if(Character.isDigit(txtScreen.getText().toString().charAt(previousCharIndex))){
+                        // If the last character was a digit, then we append a space.
+                        txtScreen.setText(" + ");
+                    } else if(txtScreen.getText().toString().charAt(previousCharIndex) == ' '){
+                        txtScreen.setText("+ ");
                     }
                 }
             }
