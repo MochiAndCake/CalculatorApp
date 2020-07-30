@@ -258,6 +258,20 @@
         android:minHeight="70dip"
         android:text="Undo" />
 
+    <Button
+        android:id="@+id/btn_convert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="41dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginBottom="356dp"
+        android:minWidth="70dip"
+        android:minHeight="70dip"
+        android:text="Convert" />
+
     <TextView
         android:id="@+id/screen"
         android:layout_width="307dp"

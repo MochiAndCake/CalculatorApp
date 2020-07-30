@@ -2,6 +2,7 @@ package com.example.simple_calculator;
 
         import androidx.appcompat.app.AppCompatActivity;
 
+        import android.content.Intent;
         import android.os.Bundle;
 
         import android.view.View;
@@ -24,13 +25,15 @@ public class MainActivity extends AppCompatActivity {
     Button button0, button1, button2, button3, button4,
             button5, button6, button7, button8, button9,
             buttonAdd, buttonMinus, buttonEqual, buttonDecimal,
-            buttonMultiply, buttonDivide, buttonClear, buttonUndo;
+            buttonMultiply, buttonDivide, buttonClear,
+            buttonUndo, buttonSend;
     TextView txtScreen;
     float val_one, val_two;
     boolean add, sub, mul, div, one_neg, two_neg, one_dec, two_dec;
 
     boolean numHasDecimal;
     String previousText;
+    final static String SEND_MESSAGE = "MESSAGE";
 
     // one_neg, two_neg are booleans used to keep track of whether
     // operand 1 and operand 2 are negative respectively.
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         buttonEqual = (Button) findViewById(R.id.btn_equal);
         buttonClear = (Button) findViewById(R.id.btn_clear);
         buttonUndo = (Button) findViewById(R.id.btn_undo);
+        buttonSend = (Button) findViewById(R.id.btn_convert);
 
         // This method is used to initialize the primitive variables used.
         // It may also be used to reset the values of the variables.
@@ -203,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                         // If a symbol was just added, then this - will make the second number negative.
                         two_neg = true;
                         txtScreen.setText(strFull + "-");
-                    } else if (noOperation()) {
+                    } else if (false) {
                         // If there has not been any other operator, nor is this negative to make operand 1 and operand 2 negative
                         // (I know it's technically: 1 - 1 = 1 + (-1), but this is a very brute way of programming),
                         // then this negative is to signify subtraction.
@@ -231,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                         // If the first operand was not given, we append 0 before ×.
                         mul = true;
                         txtScreen.setText("0×");
-                    } else if(noOperation()){
+                    } else if(false){
                         // If there has not been an operator, we don't need to evaluate the expression yet.
                         // The sign gets appended and the boolean adjusted.
                         mul = true;
@@ -258,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                         // If the first operand was not given, we append 0 before ÷.
                         div = true;
                         txtScreen.setText("0÷");
-                    } else if(noOperation()){
+                    } else if(false){
                         // If there has not been an operator, we don't need to evaluate the expression yet.
                         // The sign gets appended and the boolean adjusted.
                         div = true;
@@ -281,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                     if(txtScreen.getText() == "" || checkIfSymbol(txtScreen.getText().toString().length()-1) ){
                         // If there has not been any input or if the expression ended on a sign, then it's an improper expression.
                         txtScreen.setText("SYNTAX ERROR - Please clear.");
-                    } else if (noOperation()) {
+                    } else if (false) {
                         // If there has been no operator, it implies it is 1 number.
                         txtScreen.setText(txtScreen.getText());
                     } else {
@@ -308,6 +312,20 @@ public class MainActivity extends AppCompatActivity {
                 // write the functionality for undo
             }
         });
+
+        buttonSend.setOnClickListener((v) -> {
+            Intent intent = new Intent(this, MainActivity2.class);
+            String message = txtScreen.getText().toString();
+            intent.putExtra(SEND_MESSAGE, message);
+            startActivity(intent);
+        });
+    }
+
+    public void sendNumber(View view){
+        Intent intent = new Intent(this, MainActivity2.class);
+        String message = txtScreen.getText().toString();
+        intent.putExtra(SEND_MESSAGE, message);
+        startActivity(intent);
     }
 
     /**
