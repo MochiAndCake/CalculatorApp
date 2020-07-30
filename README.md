@@ -12,3 +12,4 @@ User cases:
 2. When the user clicks the "Undo" button, the app will display the text before the user's last
     input, unless the user's last input was cleared. However, the undo button will only undo one
     step.
+
