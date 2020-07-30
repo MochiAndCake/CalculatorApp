@@ -321,13 +321,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void sendNumber(View view){
-        Intent intent = new Intent(this, MainActivity2.class);
-        String message = txtScreen.getText().toString();
-        intent.putExtra(SEND_MESSAGE, message);
-        startActivity(intent);
-    }
-
     /**
      * This private method resets/initializes all of the variables important to functionality.
      */

@@ -13,3 +13,9 @@ User cases:
     input, unless the user's last input was cleared. However, the undo button will only undo one
     step.
 
+3. When the user clicks on the "Convert" button if they have a number on the screen, the app will
+    switch to the Unit Conversion screen. The number they had on the Calculator screen will appear
+    on the Unit Conversion screen.
+
+4. On the Unit Conversion screen, the user will see a drop down menu. The user will select an option
+    and the original number and unit and the converted number and unit will be displayed.
