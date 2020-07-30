@@ -244,6 +244,20 @@
         android:minHeight="70dip"
         android:text="C" />
 
+    <Button
+        android:id="@+id/btn_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="201dp"
+        android:layout_marginLeft="201dp"
+        android:layout_marginBottom="356dp"
+        android:minWidth="70dip"
+        android:minHeight="70dip"
+        android:text="Undo" />
+
     <TextView
         android:id="@+id/screen"
         android:layout_width="307dp"
