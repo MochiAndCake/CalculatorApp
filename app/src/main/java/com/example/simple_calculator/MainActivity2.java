@@ -100,7 +100,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                     String strHold = strResult;
                     strResult = strValue;
                     strValue = strHold;
-                    txtScreen.setText(strValue + " " + unit1 + " = " + strResult + " " + unit2);
+                    txtScreen.setText(strValue + " " + unit2 + " = " + strResult + " " + unit1);
                 }
             }
         });
