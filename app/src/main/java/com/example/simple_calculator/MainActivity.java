@@ -1,5 +1,6 @@
 package com.example.simple_calculator;
 
+        import androidx.annotation.Nullable;
         import androidx.appcompat.app.AppCompatActivity;
 
         import android.content.Intent;
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity2.class);
             String message = txtScreen.getText().toString();
             intent.putExtra(SEND_MESSAGE, message);
-            startActivity(intent);
+            startActivityForResult(intent,1);
         });
     }
 
@@ -447,5 +448,17 @@ public class MainActivity extends AppCompatActivity {
         two_dec = false;
         val_two = 0f;
         return val_one; // Return answer.
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String value = data.getStringExtra("strResult");
+                txtScreen.setText(value);
+            }
+        }
     }
 }

@@ -124,7 +124,7 @@ public class CalculatorFunction {
                     brokenExpression.add("×");
                     brokenExpression.add(Character.toString(char2));
                 } else if (signExceptMinus(char1)){
-
+                    brokenExpression.add(Character.toString(char2));
                 }
             }
 

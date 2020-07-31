@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -14,30 +15,45 @@ import org.w3c.dom.Text;
 
 public class MainActivity2 extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private String value;
+    private String strValue, strResult = "";
     private TextView txtScreen;
+    private Button buttonSend;
     private final float METRES_TO_FEET = 3.28084f;
     private final float MILES_TO_FEET = 5280;
     private final float GRAMS_TO_POUNDS = 0.00220462f;
-
-
+    final String RESULT = "strResult";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        setTitle("Unit Converter");
+
         Intent intent = getIntent();
         String strMessage = intent.getStringExtra(MainActivity.SEND_MESSAGE);
 
         txtScreen = (TextView) findViewById(R.id.screen);
         txtScreen.setText(strMessage);
-        value = strMessage;
+        strValue = strMessage;
 
         Spinner dropDown = (Spinner) findViewById(R.id.conversion_spinner);
         dropDown.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.conversions_array,android.R.layout.simple_spinner_dropdown_item);
         dropDown.setAdapter(adapter);
+
+        buttonSend = (Button) findViewById(R.id.btn_send);
+
+        buttonSend.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(RESULT, strResult);
+
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -48,7 +64,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         String unit1 = "", unit2 = "";
 
         try{
-            fltValue = Float.parseFloat(value);
+            fltValue = Float.parseFloat(strValue);
         } catch (NumberFormatException e){
             txtScreen.setText("ERROR - The value given is invalid.");
         }
@@ -87,11 +103,13 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             unit2 = "°C";
         }
 
-        txtScreen.setText(fltValue + " " + unit1 + " = " + fltResult + " " + unit2);
+        strResult = Float.toString(fltResult);
+
+        txtScreen.setText(strValue + " " + unit1 + " = " + strResult + " " + unit2);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        txtScreen.setText(value);
+        txtScreen.setText(strValue);
     }
 }
