@@ -78,7 +78,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             unit1 = "ft";
             unit2 = "m";
         } else if(selected.equals("Kilometres to Miles")){
-            fltResult = ((fltValue/1000)*METRES_TO_FEET/MILES_TO_FEET);
+            fltResult = fltValue*1000*METRES_TO_FEET/MILES_TO_FEET;
             unit1 = "km";
             unit2 = "mi";
         } else if(selected.equals("Miles to Kilometres")){
@@ -94,11 +94,11 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             unit1 = "lb";
             unit2 = "g";
         } else if(selected.equals("Celsius to Fahrenheit")){
-            fltResult = (fltValue * (9/5)) + 32;
+            fltResult = (fltValue * (9.0f/5.0f)) + 32;
             unit1 = "°C";
             unit2 = "°F";
         } else if(selected.equals("Fahrenheit to Celsius")){
-            fltResult = (fltValue - 32) * (5/9);
+            fltResult = (fltValue - 32) * (5.0f/9.0f);
             unit1 = "°F";
             unit2 = "°C";
         }

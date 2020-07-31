@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         button9 = (Button) findViewById(R.id.btn9);
 
         txtScreen = (TextView) findViewById(R.id.screen);
+        setTitle("Calculator");
 
         buttonDecimal = (Button) findViewById(R.id.btn_decimal);
         buttonMultiply = (Button) findViewById(R.id.btn_multiply);

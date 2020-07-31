@@ -3,11 +3,10 @@
 Author: Ann Soong
 
 The objective of this project is to create an android app that acts as calculator and a basic unit
-converter.
+converter. It was built off a previous project called Simple_Calculator. The functionality of the
+calculator remains simple.
 
-
-
-User cases:
+USER CASES:
 
 1. When the user clicks the "Undo" button, the app will display the text before the user's last
     input, unless the user's last input was cleared. However, the undo button will only undo one
@@ -25,11 +24,11 @@ User cases:
 
 
 
-How to run the program:
+HOW TO RUN THE PROGRAM:
 
 
 
-Test cases:
+TEST CASES:
 
 1.
 
