@@ -90,7 +90,7 @@ Since this program is an android app, it can be run from Android Studio or it ca
 emulator.
 
 Emulators will require the APK file. A copy was added to the repository for easy access.
-[GitHub] 
+[GitHub] https://github.com/MochiAndCake/CalculatorApp/blob/master/app-debug.apk
 
 1. Install Android Studio. You can download Android Studio from here:
     [GitHub] https://developer.android.com/studio
