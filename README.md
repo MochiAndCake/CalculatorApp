@@ -29,17 +29,23 @@ USER CASES:
 6. The user can click the "Switch Values" button to switch the numbers in the converter.
 
 
+
+IMPORTANT FILES:
+    MainActivity
+        This Java file contains the code of the calculator. The calculator is simple. When there are
+        2 number in the valid equation, the value will be calculated when you next enter an operator
+        or when you hit "Equals". The calculator has an "Undo" button that will take you back a step.
+        The calculator also has a "Convert" button that will send you to the unit converter.
+
+    MainActivity2
+        This Java file contains the code of the unit converter. It has 2 
+
+
+
 HOW TO RUN THE PROGRAM:
+Since this program is an android app, it can be run from Android Studio or it can be run on an emulator.
+It can be run from commandline as well, but you will need to
 
-
-
-TEST CASES:
-
-1. An Error message
-
-2.
-
-3.
 
 
 
