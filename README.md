@@ -86,12 +86,11 @@ IMPORTANT FILES:
 
 HOW TO RUN THE PROGRAM:
 
-    Since this program is an android app, it can be run from Android Studio or it can be run on an
-    emulator.
+Since this program is an android app, it can be run from Android Studio or it can be run on an
+emulator.
 
-    Emulators will require the APK file. This can be found at:
-        CalculatorApp/app/build/outputs/apk/debug/app-debug.apk
-        [GitHub]
+Emulators will require the APK file. A copy was added to the repository for easy access.
+[GitHub] 
 
 1. Install Android Studio. You can download Android Studio from here:
     [GitHub] https://developer.android.com/studio
