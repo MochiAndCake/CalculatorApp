@@ -32,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
     float val_one, val_two;
     boolean add, sub, mul, div, one_neg, two_neg, one_dec, two_dec;
 
-    boolean numHasDecimal;
+    // Since the calculator is designed to evaluate on the fly, the previous logic state will need
+    // to be saved somehow.
+    float p_val_one, p_val_two;
+    boolean p_add, p_sub, p_mul, p_div, p_one_neg, p_two_neg, p_one_dec, p_two_dec;
+
     String previousText;
     final static String SEND_MESSAGE = "MESSAGE";
 
@@ -77,89 +81,99 @@ public class MainActivity extends AppCompatActivity {
         // For each button listener method, it is first checked whether the Error message is
         // currently showing. If it is, then the user should clear the calculator before proceeding.
         button0.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "0");
             }
         });
 
         button1.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "1");
             }
         });
 
         button2.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "2");
             }
         });
 
         button3.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "3");
             }
         });
 
         button4.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "4");
             }
         });
 
         button5.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "5");
             }
         });
 
         button6.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "6");
             }
         });
 
         button7.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "7");
             }
         });
 
         button8.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "8");
             }
         });
 
         button9.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
-                previousText = txtScreen.getText().toString();
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
                 txtScreen.setText(txtScreen.getText() + "9");
             }
         });
 
         buttonDecimal.setOnClickListener((v) -> {
-            if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear or undo.")) {
-                previousText = txtScreen.getText().toString();
-                if (numHasDecimal) {
-                    txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
-                } else if (txtScreen.getText().equals("") || checkIfSymbol(txtScreen.getText().toString().length()-1)) {
+            if(!txtScreen.getText().toString().contains("ERROR")) {
+                update();
+                if (txtScreen.getText().equals("")) {
                     // If there is currently no numbers inputted, then a 0 is appended before the decimal.
                     txtScreen.setText(txtScreen.getText() + "0.");
-                    numHasDecimal = true; // The number now has a decimal.
-
+                    one_dec = true;
+                    // The first number now has a decimal.
+                } else if (checkIfSymbol(txtScreen.getText().toString().length()-1)){
+                    // If there is a symbol before the decimal, then a 0 is appended before the decimal.
+                    txtScreen.setText(txtScreen.getText() + "0.");
+                    two_dec = true;
+                    // If there's already an operator, it implies this decimal is for the second operand.
+                } else if(one_dec && noOperation() || two_dec && !noOperation()){
+                    // It is an excessive decimal if:
+                    //      - Operand 1 has a decimal and an operator has not been added.
+                    //      - Operand 2 has a decimal and there is already an operator.
+                    txtScreen.setText("SYNTAX ERROR - Please clear.");
                 } else {
                     // Otherwise, it is safe to append a decimal.
+                    // one_dec and two_dec get adjusted accordingly.
                     txtScreen.setText(txtScreen.getText() + ".");
-                    numHasDecimal = true; // The number now has a decimal.
+                    one_dec = noOperation();
+                    two_dec = !noOperation();
                 }
             }
         });
@@ -168,21 +182,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for addition
-
-                if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear or undo.")) {
-                    previousText = txtScreen.getText().toString();
-                    int previousCharIndex = txtScreen.getText().toString().length()-1;
-                    if(checkIfSymbol(previousCharIndex)){
+                if(!txtScreen.getText().toString().contains("ERROR")) {
+                    update();
+                    if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
                         // If a symbol was just added, this is an improper expression.
-                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
+                        txtScreen.setText("SYNTAX ERROR - Please clear.");
                     } else if(txtScreen.getText() == ""){
                         // If there is currently no text, we append a 0 and then +.
-                        txtScreen.setText("0 + ");
-                    } else if(Character.isDigit(txtScreen.getText().toString().charAt(previousCharIndex))){
-                        // If the last character was a digit, then we append a space.
-                        txtScreen.setText(" + ");
-                    } else if(txtScreen.getText().toString().charAt(previousCharIndex) == ' '){
-                        txtScreen.setText("+ ");
+                        add = true;
+                        txtScreen.setText("0+");
+                    } else if(noOperation()){
+                        // If there is currently no other operator, we need not evaluate the expression.
+                        // We append the sign and set the boolean.
+                        add = true;
+                        txtScreen.setText(txtScreen.getText() + "+");
+                    } else {
+                        // If there is a previous operator, we evaluate the expression and then append the sign.
+                        evaluate();
+                        add = true;
+                        txtScreen.setText(val_one + "+");
                     }
                 }
             }
@@ -193,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // write the functionality for minus
                 String strFull = txtScreen.getText().toString();
-                if(!strFull.equals("SYNTAX ERROR - Please clear.")) {
+                if(!strFull.contains("ERROR")) {
+                    update();
                     if ( (one_neg && strFull.length() == 1) ||
                             (strFull.length() >= 2 && checkIfSymbol(strFull.length()-2) && checkIfSymbol(strFull.length()-1) )) {
                         // There should not be a '-' when:
@@ -208,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                         // If a symbol was just added, then this - will make the second number negative.
                         two_neg = true;
                         txtScreen.setText(strFull + "-");
-                    } else if (false) {
+                    } else if (noOperation()) {
                         // If there has not been any other operator, nor is this negative to make operand 1 and operand 2 negative
                         // (I know it's technically: 1 - 1 = 1 + (-1), but this is a very brute way of programming),
                         // then this negative is to signify subtraction.
@@ -228,7 +247,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for multiply
-                if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
+                if(!txtScreen.toString().contains("ERROR")) {
+                    update();
                     if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
                         // If a symbol was just appended, then this is an improper expression.
                         txtScreen.setText("SYNTAX ERROR - Please clear.");
@@ -236,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
                         // If the first operand was not given, we append 0 before ×.
                         mul = true;
                         txtScreen.setText("0×");
-                    } else if(false){
+                    } else if(noOperation()){
                         // If there has not been an operator, we don't need to evaluate the expression yet.
                         // The sign gets appended and the boolean adjusted.
                         mul = true;
@@ -255,7 +275,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for division
-                if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
+                if(!txtScreen.getText().toString().contains("ERROR")) {
+                    update();
                     if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
                         // If a symbol was just appended, then this is an improper expression.
                         txtScreen.setText("SYNTAX ERROR - Please clear.");
@@ -263,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                         // If the first operand was not given, we append 0 before ÷.
                         div = true;
                         txtScreen.setText("0÷");
-                    } else if(false){
+                    } else if(noOperation()){
                         // If there has not been an operator, we don't need to evaluate the expression yet.
                         // The sign gets appended and the boolean adjusted.
                         div = true;
@@ -282,11 +303,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for equal
-                if(!txtScreen.getText().equals("SYNTAX ERROR - Please clear.")) {
+                if(!txtScreen.getText().toString().contains("ERROR")) {
+                    update();
                     if(txtScreen.getText() == "" || checkIfSymbol(txtScreen.getText().toString().length()-1) ){
                         // If there has not been any input or if the expression ended on a sign, then it's an improper expression.
                         txtScreen.setText("SYNTAX ERROR - Please clear.");
-                    } else if (false) {
+                    } else if (noOperation()) {
                         // If there has been no operator, it implies it is 1 number.
                         txtScreen.setText(txtScreen.getText());
                     } else {
@@ -302,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for clear
+                update();
                 resetGlobalVariables(); // We reset the variables.
                 txtScreen.setText(""); // The text view is emptied.
             }
@@ -311,14 +334,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for undo
+                txtScreen.setText(previousText);
+                add = p_add;
+                sub = p_sub;
+                div = p_div;
+                mul = p_mul;
+                one_neg = p_one_neg;
+                two_neg = p_two_neg;
+                one_dec = p_one_dec;
+                two_dec = p_two_dec;
+                val_one = p_val_one;
+                val_two = p_val_two;
             }
         });
 
         buttonSend.setOnClickListener((v) -> {
-            Intent intent = new Intent(this, MainActivity2.class);
-            String message = txtScreen.getText().toString();
-            intent.putExtra(SEND_MESSAGE, message);
-            startActivityForResult(intent,1);
+
+            try{
+                Float.parseFloat(txtScreen.getText().toString());
+
+                Intent intent = new Intent(this, MainActivity2.class);
+                String message = txtScreen.getText().toString();
+                intent.putExtra(SEND_MESSAGE, message);
+                startActivityForResult(intent,1);
+            } catch (NumberFormatException e) {
+                txtScreen.setText("ERROR - Input is not a number, can't proceed to conversion. \nPlease clear or undo.");
+            }
         });
     }
 
@@ -336,9 +377,15 @@ public class MainActivity extends AppCompatActivity {
         sub = false;
         mul = false;
         div = false;
+    }
 
-        numHasDecimal = false;
-        previousText = "";
+    /**
+     * This private method checks if there has been no operators in the expression.
+     *
+     * @return True if there have been no operators.
+     */
+    private boolean noOperation(){
+        return !(add || sub || mul || div);
     }
 
     /**
@@ -355,22 +402,6 @@ public class MainActivity extends AppCompatActivity {
                     || txtScreen.getText().charAt(index) == '÷'
                     || txtScreen.getText().charAt(index) == '('
                     || txtScreen.getText().charAt(index) == ')';
-        }
-        return false;
-    }
-
-    /**
-     * This private method checks if there is a symbol at the index given.
-     *
-     * @param index The index of the view text to check.
-     * @return True if the character at the index is an operator symbol.
-     */
-    private boolean checkIfSign(int index){
-        if(index < txtScreen.getText().length()){
-            return txtScreen.getText().charAt(index) == '+'
-                    || txtScreen.getText().charAt(index) == '-'
-                    || txtScreen.getText().charAt(index) == '×'
-                    || txtScreen.getText().charAt(index) == '÷';
         }
         return false;
     }
@@ -448,6 +479,23 @@ public class MainActivity extends AppCompatActivity {
         two_dec = false;
         val_two = 0f;
         return val_one; // Return answer.
+    }
+
+    /**
+     * Updates the previous state with the most recent previous state.
+     */
+    private void update(){
+        previousText = txtScreen.getText().toString();
+        p_add = add;
+        p_sub = sub;
+        p_div = div;
+        p_mul = mul;
+        p_one_neg = one_neg;
+        p_two_neg = two_neg;
+        p_one_dec = one_dec;
+        p_two_dec = two_dec;
+        p_val_one = val_one;
+        p_val_two = val_two;
     }
 
     @Override
