@@ -1,3 +1,4 @@
+// Ann Soong
 package com.example.simple_calculator;
 
         import androidx.annotation.Nullable;
@@ -16,8 +17,7 @@ package com.example.simple_calculator;
  * When the user attempts to input an equation with 2 operators, the expression will be evaluated
  * before the second operator is appended to the equation.
  *
- * This was for Assignment 3. This program tightly follows the instructions
- * that were given.
+ * This is for Assignment 5 and was built upon Assignment 3.
  *
  * @author Ann Soong
  */
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     float p_val_one, p_val_two;
     boolean p_add, p_sub, p_mul, p_div, p_one_neg, p_two_neg, p_one_dec, p_two_dec;
 
-    String previousText;
+    String previousText; // This will hold the text previously displayed.
     final static String SEND_MESSAGE = "MESSAGE";
 
     // one_neg, two_neg are booleans used to keep track of whether
@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         // This method is used to initialize the primitive variables used.
         // It may also be used to reset the values of the variables.
-        resetGlobalVariables();
+        resetVariables();
+        update();
 
         // For each button listener method, it is first checked whether the Error message is
         // currently showing. If it is, then the user should clear the calculator before proceeding.
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     // It is an excessive decimal if:
                     //      - Operand 1 has a decimal and an operator has not been added.
                     //      - Operand 2 has a decimal and there is already an operator.
-                    txtScreen.setText("SYNTAX ERROR - Please clear.");
+                    txtScreen.setText("SYNTAX ERROR - Cannot have 2 decimals in a number. Please clear or undo.");
                 } else {
                     // Otherwise, it is safe to append a decimal.
                     // one_dec and two_dec get adjusted accordingly.
@@ -187,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
                     update();
                     if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
                         // If a symbol was just added, this is an improper expression.
-                        txtScreen.setText("SYNTAX ERROR - Please clear.");
-                    } else if(txtScreen.getText() == ""){
+                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
+                    } else if(txtScreen.getText().length() <= 0){
                         // If there is currently no text, we append a 0 and then +.
                         add = true;
                         txtScreen.setText("0+");
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                         // There should not be a '-' when:
                         //      First number is negative but number not typed.
                         //      Symbol + symbol (most likely '-') already
-                        txtScreen.setText("SYNTAX ERROR - Please clear.");
+                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
                     } else if (!one_neg && strFull.length() == 0) {
                         // If there has not been an initial -, then it can be added to make the first number negative.
                         one_neg = true;
@@ -252,8 +253,8 @@ public class MainActivity extends AppCompatActivity {
                     update();
                     if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
                         // If a symbol was just appended, then this is an improper expression.
-                        txtScreen.setText("SYNTAX ERROR - Please clear.");
-                    } else if(txtScreen.getText() == ""){
+                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
+                    } else if(txtScreen.getText().length() <= 0){
                         // If the first operand was not given, we append 0 before ×.
                         mul = true;
                         txtScreen.setText("0×");
@@ -280,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
                     update();
                     if(checkIfSymbol(txtScreen.getText().toString().length()-1)){
                         // If a symbol was just appended, then this is an improper expression.
-                        txtScreen.setText("SYNTAX ERROR - Please clear.");
-                    } else if (txtScreen.getText() == ""){
+                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
+                    } else if (txtScreen.getText().length() <= 0){
                         // If the first operand was not given, we append 0 before ÷.
                         div = true;
                         txtScreen.setText("0÷");
@@ -306,9 +307,9 @@ public class MainActivity extends AppCompatActivity {
                 // write the functionality for equal
                 if(!txtScreen.getText().toString().contains("ERROR")) {
                     update();
-                    if(txtScreen.getText() == "" || checkIfSymbol(txtScreen.getText().toString().length()-1) ){
+                    if(txtScreen.getText().length() <= 0 || checkIfSymbol(txtScreen.getText().toString().length()-1) ){
                         // If there has not been any input or if the expression ended on a sign, then it's an improper expression.
-                        txtScreen.setText("SYNTAX ERROR - Please clear.");
+                        txtScreen.setText("SYNTAX ERROR - Please clear or undo.");
                     } else if (noOperation()) {
                         // If there has been no operator, it implies it is 1 number.
                         txtScreen.setText(txtScreen.getText());
@@ -326,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // write the functionality for clear
                 update();
-                resetGlobalVariables(); // We reset the variables.
+                resetVariables(); // We reset the variables.
                 txtScreen.setText(""); // The text view is emptied.
             }
         });
@@ -335,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // write the functionality for undo
-                txtScreen.setText(previousText);
+                txtScreen.setText(previousText); // We set all current states to the previous state.
                 add = p_add;
                 sub = p_sub;
                 div = p_div;
@@ -350,24 +351,27 @@ public class MainActivity extends AppCompatActivity {
         });
 
         buttonSend.setOnClickListener((v) -> {
-
             try{
+                // Before sending, we need to make sure the value we send is a numeric value.
                 Float.parseFloat(txtScreen.getText().toString());
 
+                // Intent is used to send data to the next activity, conversion.
                 Intent intent = new Intent(this, MainActivity2.class);
                 String message = txtScreen.getText().toString();
                 intent.putExtra(SEND_MESSAGE, message);
                 startActivityForResult(intent,1);
             } catch (NumberFormatException e) {
+                // If the calculator currently does not hold a numeric value, we inform the user
+                // that we can't proceed to conversion.
                 txtScreen.setText("ERROR - Input is not a number, can't proceed to conversion. \nPlease clear or undo.");
             }
         });
     }
 
     /**
-     * This private method resets/initializes all of the variables important to functionality.
+     * This private method resets/initializes all of the variables important to the current state.
      */
-    private void resetGlobalVariables(){
+    private void resetVariables(){
         val_one = 0f;
         val_two = 0f;
         one_neg = false;
@@ -396,7 +400,7 @@ public class MainActivity extends AppCompatActivity {
      * @return True if the character at the index is an operator symbol.
      */
     private boolean checkIfSymbol(int index){
-        if(index < txtScreen.getText().length()){
+        if(index >= 0 && index < txtScreen.getText().length()){
             return txtScreen.getText().charAt(index) == '+'
                     || txtScreen.getText().charAt(index) == '-'
                     || txtScreen.getText().charAt(index) == '×'
@@ -499,14 +503,18 @@ public class MainActivity extends AppCompatActivity {
         p_val_two = val_two;
     }
 
+    /**
+     * This function gets called when this activity receives data from the conversion activity.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode == 1) {
             if(resultCode == RESULT_OK){
+                resetVariables(); // We reset the current variables.
+                update(); // Then we reset the previous state.
                 String value = data.getStringExtra("strResult");
-                txtScreen.setText(value);
+                txtScreen.setText(value); // We display the resulting value we received.
             }
         }
     }

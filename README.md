@@ -16,12 +16,17 @@ USER CASES:
     switch to the Unit Conversion screen. The number they had on the Calculator screen will appear
     on the Unit Conversion screen.
 
-3. On the Unit Conversion screen, the user will see a drop down menu. The user will select an option
-    and the original number and unit and the converted number and unit will be displayed.
+3. On the Unit Conversion screen, the user will see two drop down menus. The user will select a
+    category of conversion in the first drop down and the options will change in the second drop
+    down.
 
-4. From the unit conversion screen, the user can click "Send Back". The resulting number from the
+4. When the user chooses an option of conversion, the original number and unit and the resulting
+    number and unit will be displayed.
+
+5. From the unit conversion screen, the user can click "Send Result". The resulting number from the
     conversion will be sent back to the calculator.
 
+6. The user can click the "Switch Values" button to switch the numbers in the converter.
 
 
 HOW TO RUN THE PROGRAM:
@@ -30,11 +35,13 @@ HOW TO RUN THE PROGRAM:
 
 TEST CASES:
 
-1.
+1. An Error message
 
 2.
 
 3.
 
+
+
 Sources:
-https://www.youtube.com/watch?v=AD5qt7xoUU8
+Learned how to pass data between activities from this informative video: https://www.youtube.com/watch?v=AD5qt7xoUU8
