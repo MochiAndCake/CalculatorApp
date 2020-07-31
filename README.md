@@ -36,6 +36,7 @@ USER CASES:
 
 
 GOING FORWARD:
+
     Going forward, more features can be added to this project. Both the unit converter and the
     calculator can include more features. The unit converter could benefit from adding an activity
     as a transition in from the calculator to the converter that would allow users to select the
@@ -46,6 +47,7 @@ GOING FORWARD:
 
 
 IMPORTANT FILES:
+
     MainActivity
         This Java file contains the code of the calculator. The calculator is simple. When there are
         2 number in the valid equation, the value will be calculated when you next enter an operator
@@ -83,12 +85,13 @@ IMPORTANT FILES:
 
 
 HOW TO RUN THE PROGRAM:
-Since this program is an android app, it can be run from Android Studio or it can be run on an
-emulator.
 
-Emulators will require the APK file. This can be found at:
-    CalculatorApp/app/build/outputs/apk/debug/app-debug.apk
-    [GitHub]
+    Since this program is an android app, it can be run from Android Studio or it can be run on an
+    emulator.
+
+    Emulators will require the APK file. This can be found at:
+        CalculatorApp/app/build/outputs/apk/debug/app-debug.apk
+        [GitHub]
 
 1. Install Android Studio. You can download Android Studio from here:
     [GitHub] https://developer.android.com/studio
